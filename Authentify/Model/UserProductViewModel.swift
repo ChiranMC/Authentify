@@ -26,7 +26,7 @@ class UserProductViewModel: ObservableObject {
     func fetchUserProducts(for username: String) {
         errorMessage = "Fetching products for \(username)..."
         
-        guard let url = URL(string: "http://localhost:3000/api/user-products/\(username)") else {
+        guard let url = URL(string: "http://192.168.1.4:3000/api/user-products/\(username)") else {
             print("Invalid URL")
             return
         }

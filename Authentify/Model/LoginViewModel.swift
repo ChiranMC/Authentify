@@ -34,7 +34,7 @@ class LoginViewModel: ObservableObject {
 
     // Login function
     func loginUser() {
-        guard let url = URL(string: "http://localhost:3000/login") else { return }
+        guard let url = URL(string: "http://192.168.1.4:3000/login") else { return }
 
         let loginData = [
             "username": userName,
@@ -98,7 +98,7 @@ class LoginViewModel: ObservableObject {
 
     // Register
     func registerUser() {
-        guard let url = URL(string: "http://localhost:3000/register") else { return }
+        guard let url = URL(string: "http://192.168.1.4:3000/register") else { return }
 
         guard let ageInt = Int(age) else {
             self.registrationStatus = "Invalid age format."

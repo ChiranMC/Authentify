@@ -129,11 +129,12 @@ struct LoginView: View {
                     .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.gray.opacity(0.5)))
                 }
 
-                Button("Create a Account") {
+                NavigationLink(destination: SignUpView()) {
+                    Text("Create a Account")
+                        .padding(.top)
+                        .font(.footnote)
+                        .foregroundColor(Color.black)
                 }
-                .padding(.top)
-                .font(.footnote)
-                .foregroundColor(Color.black)
                 
                 // Navigation Trigger
 //                NavigationLink(

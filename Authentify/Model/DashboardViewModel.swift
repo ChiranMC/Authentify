@@ -30,7 +30,7 @@ class DashboardViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     func fetchBrandItems() {
-        guard let url = URL(string: "http://localhost:3000/api/brands") else {
+        guard let url = URL(string: "http://192.168.1.4:3000/api/brands") else {
             print("Invalid URL")
             return
         }
