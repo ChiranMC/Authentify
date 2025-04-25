@@ -1,38 +1,43 @@
+//
+//  ProductAuthenticationView.swift
+//  Authentify
+//
+//  Created by Knight.Wolf on 2025-04-20.
+//
+
 import SwiftUI
+import PhotosUI
 
 struct ProductAuthenticationView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var serialNumber: String = ""
     @State private var selectedImages: [UIImage] = []
+    @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var selectedImage: UIImage? = nil
 
     var body: some View {
-        VStack(spacing: 20) {
-            // Back Button
+        VStack(spacing: 10) {
             HStack {
                 Button(action: {
                     presentationMode.wrappedValue.dismiss()
                 }) {
                     Image(systemName: "chevron.left")
-                        .foregroundColor(.white)
+                        .foregroundColor(.brandMainColor)
                         .padding()
-                        .background(Color.black.opacity(0.6))
+                        .background(Color.white.opacity(0.6))
                         .clipShape(Circle())
                 }
                 Spacer()
             }
-            .padding(.top, 40)
+            .padding(.top, 10)
             .padding(.horizontal)
 
-            Spacer()
-            
-            // Lock Icon
             Image(systemName: "lock")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 80, height: 80)
                 .foregroundColor(.white)
 
-            // Title and Description
             Text("Authenticate Your Product")
                 .font(.title)
                 .fontWeight(.bold)
@@ -45,7 +50,6 @@ struct ProductAuthenticationView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
 
-            // Serial Number Field
             VStack(alignment: .leading) {
                 Text("Product Serial Number")
                     .foregroundColor(.white)
@@ -58,7 +62,6 @@ struct ProductAuthenticationView: View {
             }
             .padding(.horizontal)
 
-            // Image Upload Placeholder
             VStack(spacing: 12) {
                 Text("Product Image")
                     .foregroundColor(.white)
@@ -78,20 +81,29 @@ struct ProductAuthenticationView: View {
                             Text("Format: .jpeg, .png & Max file size: 25 MB")
                                 .font(.footnote)
                                 .foregroundColor(.gray)
-                            Button("Browse Files") {
-                                // TODO: Add image picker
+                            
+                            PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
+                                Text("Browse Files")
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 6)
+                                    .background(Color.white.opacity(0.2))
+                                    .cornerRadius(6)
+                                    .foregroundColor(.white)
                             }
-                            .padding(.horizontal)
-                            .padding(.vertical, 6)
-                            .background(Color.white.opacity(0.2))
-                            .cornerRadius(6)
-                            .foregroundColor(.white)
+                            .onChange(of: selectedItem) { newItem in
+                                Task {
+                                    if let data = try? await newItem?.loadTransferable(type: Data.self),
+                                       let uiImage = UIImage(data: data) {
+                                        selectedImage = uiImage
+                                        selectedImages.append(uiImage)
+                                    }
+                                }
+                            }
                         }
                     )
             }
             .padding(.horizontal)
 
-            // Verification Info
             Text("The verification process may take 2–3 days, during which the product details will be carefully reviewed. You will receive a notification once the verification is complete.")
                 .font(.footnote)
                 .foregroundColor(.white)
@@ -100,9 +112,8 @@ struct ProductAuthenticationView: View {
 
             Spacer()
 
-            // Authenticate Button
             Button("Authenticate") {
-                // Authentication action
+                
             }
             .padding()
             .frame(maxWidth: .infinity)
@@ -110,7 +121,17 @@ struct ProductAuthenticationView: View {
             .foregroundColor(.black)
             .cornerRadius(8)
             .padding(.horizontal)
+            .padding(.bottom, 26)
         }
-        .background(Color.black.edgesIgnoringSafeArea(.all))
+        .ignoresSafeArea(edges: .bottom)
+        .navigationBarBackButtonHidden(true)
+        .background(Color.brandMainColor.edgesIgnoringSafeArea(.all))
+    }
+}
+
+// MARK: - Preview
+struct ProductAuthenticationView_Previews: PreviewProvider {
+    static var previews: some View {
+        ProductAuthenticationView()
     }
 }

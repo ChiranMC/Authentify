@@ -7,16 +7,20 @@
 
 
 import SwiftUI
+import MapKit
+
 
 struct BrandDetailsView: View {
     let brand: BrandItem
     @Binding var selectedNavTab: Tab
     @Environment(\.presentationMode) var presentationMode
+    @ObservedObject var loginViewModel: LoginViewModel
 
     @State private var selectedTab: BrandTab = .description
     @StateObject private var viewModel = BrandDetailsViewModel()
     
     @State private var selectedProduct: Product? = nil
+    @State private var navigateToAuth = false
 
     enum BrandTab {
         case description, products
@@ -98,10 +102,67 @@ struct BrandDetailsView: View {
                             if viewModel.descriptionText.isEmpty {
                                 ProgressView("Loading description...")
                             } else {
-                                Text(viewModel.descriptionText)
-                                    .font(.body)
-                                    .foregroundColor(.gray)
-                                    .padding()
+//                                Text(viewModel.descriptionText)
+//                                    .font(.body)
+//                                    .foregroundColor(.gray)
+//                                    .padding()
+                                VStack(alignment: .leading, spacing: 16) {
+                                    Text(brand.description)
+                                        .font(.body)
+                                        .foregroundColor(.gray)
+                                    
+                                    Spacer()
+                                    Text("Check your product authenticity !")
+                                        .font(.body)
+                                        .fontWeight(.semibold)
+                                        .foregroundColor(.black)
+
+                                    Text("Ensure the authenticity of your owned products by entering the product serial number for verification. Once a serial verification is successfully completed with the brand, you will receive a digital certificate as a proof of product authenticity")
+                                        .font(.body)
+                                        .foregroundColor(.gray)
+                                    
+                                    VStack(spacing: 16) {
+                                        Button("Authenticate Product") {
+                                            navigateToAuth = true
+                                        }
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(Color.brandMainColor)
+                                        .foregroundColor(.white)
+                                        .cornerRadius(8)
+
+                                        NavigationLink(
+                                            destination: ProductAuthenticationView(),
+                                            isActive: $navigateToAuth
+                                        ) {
+                                            EmptyView()
+                                        }
+                                    }
+                                    .padding(.horizontal)
+                                    
+                                    Spacer()
+                                    //Map Block
+                                    Text("Look for nearest authorised service centers")
+                                        .font(.body)
+                                        .fontWeight(.semibold)
+                                        .foregroundColor(.black)
+                                    Text("Locate the nearest authorized service centers with ease. Get professional assistance from trusted experts at authorized service facilities.")
+                                        .font(.body)
+                                        .foregroundColor(.gray)
+                                    
+                                    Map(coordinateRegion: .constant(MKCoordinateRegion(
+                                        center: CLLocationCoordinate2D(latitude: brand.latitude, longitude: brand.longitude),
+                                        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                                    )), annotationItems: [brand]) { place in
+                                        MapMarker(coordinate: CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longitude), tint: .blue)
+                                    }
+                                    .frame(height: 200)
+                                    .cornerRadius(10)
+                                    
+                                    
+                                }
+                                .padding()
+
                             }
                         } else {
                             if viewModel.products.isEmpty {
@@ -144,7 +205,7 @@ struct BrandDetailsView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
 
-                BottomNavBar(selectedTab: $selectedNavTab)
+                BottomNavBar(selectedTab: $selectedNavTab,viewModel: loginViewModel)
                     .padding(.bottom, 16)
             }
             .edgesIgnoringSafeArea(.top)
@@ -153,7 +214,7 @@ struct BrandDetailsView: View {
                 viewModel.fetchBrandDetails(for: brand.id)
             }
             .navigationDestination(item: $selectedProduct) { product in
-                    ProductDetailView(product: product)
+                ProductDetailView(product: product, brand: brand)
                     .navigationBarBackButtonHidden(true)
                     .navigationBarHidden(true)
                 }

@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		505171C42DBB79D1001E995A /* sneaker_airforce.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 505171C32DBB79D1001E995A /* sneaker_airforce.usdz */; };
+		505171C52DBB79D1001E995A /* sneaker_airforce.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 505171C32DBB79D1001E995A /* sneaker_airforce.usdz */; };
+		505171C62DBB79D1001E995A /* sneaker_airforce.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 505171C32DBB79D1001E995A /* sneaker_airforce.usdz */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		505432F62DA811F300788E16 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		505171C32DBB79D1001E995A /* sneaker_airforce.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = sneaker_airforce.usdz; sourceTree = "<group>"; };
 		505432E52DA811F100788E16 /* Authentify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Authentify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		505432F52DA811F300788E16 /* AuthentifyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AuthentifyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		505432FF2DA811F300788E16 /* AuthentifyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AuthentifyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,6 +86,7 @@
 				505432F82DA811F300788E16 /* AuthentifyTests */,
 				505433022DA811F300788E16 /* AuthentifyUITests */,
 				505432E62DA811F100788E16 /* Products */,
+				505171C32DBB79D1001E995A /* sneaker_airforce.usdz */,
 			);
 			sourceTree = "<group>";
 		};
@@ -212,6 +220,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				505171C42DBB79D1001E995A /* sneaker_airforce.usdz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,6 +228,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				505171C62DBB79D1001E995A /* sneaker_airforce.usdz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,6 +236,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				505171C52DBB79D1001E995A /* sneaker_airforce.usdz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,9 +404,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Authentify/Authentify.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Authentify/Preview Content\"";
+				DEVELOPMENT_TEAM = J8LVM5QHQX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -421,9 +434,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Authentify/Authentify.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Authentify/Preview Content\"";
+				DEVELOPMENT_TEAM = J8LVM5QHQX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

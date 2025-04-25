@@ -1,22 +1,44 @@
 import SwiftUI
 import Combine
 
+struct Product: Identifiable, Codable, Hashable {
+    let id: Int
+    let name: String
+    let imageName: String
+    let brandId: Int
+    let description: String
+    let materialAndCare: String
+}
+
 class BrandDetailsViewModel: ObservableObject {
     @Published var descriptionText: String = ""
-    @Published var products: [String] = []
+    @Published var products: [Product] = []
+    
+    private var cancellables = Set<AnyCancellable>()
 
     func fetchBrandDetails(for brandID: Int) {
-        // Simulate API delay
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.descriptionText = "This is a backend-fetched description for brand ID \(brandID)."
-            self.products = [
-                "Royal Oak Offshore Chronograph",
-                "Code 11.59 by Audemars Piguet",
-                "Royal Oak Selfwinding Flying Tourbillon"
-            ]
+        descriptionText = "Fetching brand details..."
+        
+        guard let url = URL(string: "http://localhost:3000/api/products/by-brand?brandId=\(brandID)") else {
+            print("Invalid URL")
+            return
         }
 
-        // 🔜 Later, replace with real network call
-        // URLSession.shared.dataTask(...) or Alamofire.request(...)
+        URLSession.shared.dataTaskPublisher(for: url)
+            .map { $0.data }
+            .decode(type: [Product].self, decoder: JSONDecoder())
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    self.descriptionText = "Brand ID \(brandID) products loaded."
+                case .failure(let error):
+                    self.descriptionText = "Failed to load: \(error.localizedDescription)"
+                    print("API Error: \(error)")
+                }
+            }, receiveValue: { [weak self] products in
+                self?.products = products
+            })
+            .store(in: &cancellables)
     }
 }

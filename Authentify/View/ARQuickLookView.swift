@@ -1,3 +1,11 @@
+//
+//  ARQuickLookView.swift
+//  Authentify
+//
+//  Created by Knight.Wolf on 2025-04-24.
+//
+
+
 import SwiftUI
 import QuickLook
 
