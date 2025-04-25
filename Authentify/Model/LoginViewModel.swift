@@ -71,6 +71,9 @@ class LoginViewModel: ObservableObject {
                                 self.userName = user.username
                                 self.loginStatus = "Login successful!"
                                 self.isLoggedIn = true
+                                
+                                UserDefaults.standard.set(self.currentUser?.username, forKey: "faceID_username")
+                                UserDefaults.standard.set(self.currentUser?.password, forKey: "faceID_password")
                             } else {
                                 self.loginStatus = "Failed to parse user data."
                                 self.isLoggedIn = false

@@ -7,6 +7,8 @@
 
 
 import SwiftUI
+import LocalAuthentication
+
 
 struct LoginView: View {
     @State private var email = ""
@@ -14,6 +16,35 @@ struct LoginView: View {
     @State private var isPasswordVisible = false
     
     @StateObject private var viewModel = LoginViewModel()
+    
+    func authenticateWithFaceID() {
+        let context = LAContext()
+        var error: NSError?
+
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Login with Face ID") { success, authenticationError in
+                DispatchQueue.main.async {
+                    if success {
+                        // Fetch stored credentials (for example from UserDefaults)
+                        if let savedUsername = UserDefaults.standard.string(forKey: "faceID_username"),
+                           let savedPassword = UserDefaults.standard.string(forKey: "faceID_password") {
+                            
+                            viewModel.userName = savedUsername
+                            viewModel.password = savedPassword
+                            viewModel.loginUser() // Trigger your existing login logic
+                        } else {
+                            viewModel.loginStatus = "No Face ID credentials found."
+                        }
+                    } else {
+                        viewModel.loginStatus = "Face ID Authentication failed."
+                    }
+                }
+            }
+        } else {
+            viewModel.loginStatus = "Face ID not available on this device."
+        }
+    }
+
 
     var body: some View {
         
@@ -81,6 +112,19 @@ struct LoginView: View {
                         .foregroundColor(.white)
                         .background(Color(red: 41/255, green: 37/255, blue: 38/255))
                         .cornerRadius(10)
+                }
+                Button(action: {
+                    authenticateWithFaceID()
+                }) {
+                    HStack {
+                        Image(systemName: "faceid")
+                            .font(.system(size: 25))
+                        Text("Login with Face ID")
+                            .foregroundColor(.black)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.gray.opacity(0.5)))
                 }
                 if let status = viewModel.loginStatus {
                                 Text(status)
